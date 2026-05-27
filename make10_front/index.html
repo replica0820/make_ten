@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Make 10 Puzzle</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>今日のMake 10 パズル</h1>
+      
+      <div class="calculator">
+        <div class="display" id="formula-display">
+          </div>
+
+        <div class="keyboard">
+          <div class="numbers-row" id="numbers-container">
+            <span class="loading">数字を取得中...</span>
+          </div>
+
+          <div class="operators-row">
+            <button class="btn op-btn">+</button>
+            <button class="btn op-btn">-</button>
+            <button class="btn op-btn">*</button>
+            <button class="btn op-btn">/</button>
+            <button class="btn op-btn">(</button>
+            <button class="btn op-btn">)</button>
+          </div>
+
+          <div class="controls-row">
+            <button class="btn action-btn" id="btn-delete">1つ消す</button>
+            <button class="btn action-btn" id="btn-reset">やり直す</button>
+          </div>
+          
+          <button class="btn submit-btn" id="btn-submit">提出する (10か判定！)</button>
+        </div>
+      </div>
+    </div>
+    
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

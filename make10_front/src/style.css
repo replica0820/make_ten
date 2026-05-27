@@ -1,0 +1,73 @@
+body {
+  font-family: sans-serif;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+#app {
+  width: 100%;
+  max-width: 400px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.calculator {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.display {
+  background: #222;
+  color: #0f0; /* デジタル時計のような緑色 */
+  font-size: 1.5rem;
+  font-family: monospace;
+  padding: 15px;
+  min-height: 30px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: right;
+  letter-spacing: 2px;
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.numbers-row, .operators-row, .controls-row {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.btn {
+  flex: 1;
+  padding: 15px 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  transition: 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* 各種ボタンの色分け */
+.num-btn { background-color: #fff; border: 2px solid #ccc; }
+.num-btn:disabled { background-color: #f9f9f9; color: #ccc; cursor: not-allowed; border-color: #eee; }
+.op-btn { background-color: #e3f2fd; color: #1976d2; }
+.action-btn { background-color: #ffebee; color: #d32f2f; }
+.submit-btn { background-color: #4caf50; color: white; width: 100%; margin-top: 10px; }
