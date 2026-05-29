@@ -29,3 +29,9 @@ def get_daily_numbers():
     today_item = daily_random.choice(json_data)
     numbers = today_item['numbers']
     return {"numbers": numbers}
+
+@app.get("/random")
+def get_random_numbers():
+    random_item = random.choice(json_data)
+    numbers = random_item['numbers']
+    return {"numbers": numbers}
