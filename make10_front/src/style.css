@@ -139,3 +139,24 @@ dialog ul{
 .op-btn { background-color: #e3f2fd; color: #1976d2; }
 .action-btn { background-color: #ffebee; color: #d32f2f; }
 .submit-btn { background-color: #4caf50; color: white; width: 100%; margin-top: 10px; }
+
+/* トースト通知の基本スタイル（最初は画面の上に隠しておく） */
+.toast {
+  position: fixed;
+  top: -100px; /* 画面外に追い出しておく */
+  left: 50%;
+  transform: translateX(-50%); /* ド真ん中に持ってくる魔法 */
+  background-color: #333;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: top 0.4s ease; /* topの値が変わった時に、0.4秒かけてフワッと動かす */
+  z-index: 1000;
+}
+
+/* トーストを表示する時のスタイル（このクラスがつくと画面内に降りてくる） */
+.toast.show {
+  top: 20px;
+}
