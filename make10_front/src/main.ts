@@ -72,6 +72,9 @@ async function fetchDailyNumbers() {
 const opButtons = document.querySelectorAll(".op-btn");
 const deleteBtn = document.getElementById("btn-delete");
 const resetBtn = document.getElementById("btn-reset");
+const ruleBtn = document.getElementById("btn-rule");
+const ruleDialog = document.getElementById("rule-dialog") as HTMLDialogElement;
+const closeRuleBtn = document.getElementById("btn-close-rule");
 
 opButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -147,6 +150,18 @@ if (resetBtn) {
     openBracketCount = 0;
     updateDisplay();
   });
+}
+
+if(ruleBtn && ruleDialog) {
+  ruleBtn.addEventListener("click", () => {
+    ruleDialog.showModal();
+  })
+}
+
+if (closeRuleBtn && ruleDialog){
+  closeRuleBtn.addEventListener("click", () => {
+    ruleDialog.close();
+  })
 }
 
 // ==========================================

@@ -7,8 +7,11 @@
   </head>
   <body>
     <div id="app">
-      <h1>今日のMake 10 パズル</h1>
-      
+      <div class="header-container">
+        <h1>今日のMake 10 パズル</h1>   
+        <button id="btn-rule" class="info-btn" title="ルールを見る">i</button>
+      </div>
+
       <div class="calculator">
         <div class="display" id="formula-display">
           </div>
@@ -35,6 +38,17 @@
           <button class="btn submit-btn" id="btn-submit">提出する (10か判定！)</button>
         </div>
       </div>
+      <dialog id="rule-dialog">
+        <h2>ルールの説明</h2>
+        <ul>
+          <li>用意された4つの数字を、<strong>すべて1回ずつ</strong>使います。</li>
+          <li>四則演算（＋, －, ×, ÷ ）とカッコを組み合わせて、計算結果が<strong>ピッタリ「10」</strong>になる数式を作ってください。</li>
+        </ul>
+
+        <div class="dialog-actions">
+          <button id="btn-close-rule" class="btn">閉じる</button>
+        </div>
+      </dialog>
     </div>
     
     <script type="module" src="/src/main.ts"></script>
