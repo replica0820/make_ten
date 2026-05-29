@@ -20,6 +20,28 @@ let openBracketCount: number = 0;
 // ==========================================
 // 3. ロジック・画面更新用の関数群
 // ==========================================
+
+const toast = document.getElementById("toast");
+
+function showToast(message: string, isSuccess: boolean) {
+  if (!toast) return;
+
+  toast.textContent = message;
+
+  if (isSuccess) {
+    /* trueの時の処理 */
+    toast.style.backgroundColor = "#4caf50";
+  } else {
+    /* falseの時の処理 */
+    toast.style.backgroundColor = "#f44336";
+  }
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
 function updateDisplay() {
   const display = document.getElementById("formula-display");
   if (display) {
@@ -172,19 +194,19 @@ const submitBtn = document.getElementById("btn-submit");
 if (submitBtn) {
   submitBtn.addEventListener("click", () => {
     if (used.includes(false)) {
-      alert("数字を4つすべて使ってください！");
+      showToast("数字を4つすべて使ってください！",false);
       return;
     }
 
     if (openBracketCount !== 0) {
-      alert("カッコが閉じられていません！");
+      showToast("カッコが閉じられていません！",false);
       return;
     }
 
     const lastItem = formula.at(-1);
     const operators = ["+", "-", "*", "/"];
     if (lastItem && operators.includes(lastItem.char)) {
-      alert("数式が途中で終わっています！");
+      showToast("数式が途中で終わっています！",false);
       return;
     }
 
@@ -194,13 +216,13 @@ if (submitBtn) {
       const result = eval(formulaString);
 
       if (Math.abs(result - 10) < 0.00001) {
-        alert(`おめでとうございます！計算結果: ${result}`);
+        showToast(`おめでとうございます！計算結果: ${result}`,true);
       } else {
-        alert(`残念！計算結果は ${result} でした。やり直してください！`);
+        showToast(`残念！計算結果は ${result} でした。やり直してください！`,false);
       }
       
     } catch (error) {
-      alert("数式を正しく計算できませんでした！");
+      showToast("数式を正しく計算できませんでした！",false);
     }
   });
 }
