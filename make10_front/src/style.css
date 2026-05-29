@@ -65,6 +65,74 @@ h1 {
   transform: scale(0.95);
 }
 
+dialog {
+  border: none;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+}
+
+dialog::backdrop{
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog h2{
+  margin-top: 0;
+}
+
+dialog ul{
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.header-container h1{
+  margin: 0;
+}
+
+.info-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #555;
+  background-color: transparent;
+  color: #555;
+  font-family: "Times New Roman", serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.info-btn:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+.dialog-actions {
+  text-align: center;
+  margin-top: 24px;
+}
+
+#btn-close-rule {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
 /* 各種ボタンの色分け */
 .num-btn { background-color: #fff; border: 2px solid #ccc; }
 .num-btn:disabled { background-color: #f9f9f9; color: #ccc; cursor: not-allowed; border-color: #eee; }
