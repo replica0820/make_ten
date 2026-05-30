@@ -3,6 +3,9 @@ import '../src/style.css'
 // ==========================================
 // 1. 定数・DOM要素の取得
 // ==========================================
+const settingBtn = document.getElementById("btn-setting");
+const settingDialog = document.getElementById("setting-dialog") as HTMLDialogElement;
+const closeSettingBtn = document.getElementById("btn-close-setting");
 const difficultyToggle = document.getElementById("difficulty-toggle") as HTMLInputElement;
 const modeLabel = document.getElementById("mode-label");
 const API_URL = "http://localhost:8000/random";
@@ -209,6 +212,18 @@ if (difficultyToggle) {
     openBracketCount = 0;
     updateDisplay();
     fetchDailyNumbers();
+  })
+}
+
+if (settingBtn && settingDialog) {
+  settingBtn.addEventListener("click", () => {
+    settingDialog.showModal();
+  })
+}
+
+if (closeSettingBtn && settingDialog) {
+  closeSettingBtn.addEventListener("click", () => {
+    settingDialog.close();
   })
 }
 
