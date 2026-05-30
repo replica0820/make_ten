@@ -3,7 +3,13 @@ import '../src/style.css'
 // ==========================================
 // 1. 定数・DOM要素の取得
 // ==========================================
+const settingBtn = document.getElementById("btn-setting");
+const settingDialog = document.getElementById("setting-dialog") as HTMLDialogElement;
+const closeSettingBtn = document.getElementById("btn-close-setting");
+const difficultyToggle = document.getElementById("difficulty-toggle") as HTMLInputElement;
+const modeLabel = document.getElementById("mode-label");
 const API_URL = "http://localhost:8000/random";
+const API_Hard = "http://localhost:8000/hard";
 
 type FormulaItem = {
   char: string;
@@ -13,7 +19,8 @@ type FormulaItem = {
 // ==========================================
 // 2. 状態変数（State）の定義
 // ==========================================
-let used: boolean[] = [false, false, false, false];
+let isHardMode: boolean = false;
+let used: boolean[] = [];
 let formula: FormulaItem[] = [];
 let openBracketCount: number = 0;
 
@@ -54,7 +61,7 @@ function updateDisplay() {
 function resetState() {
   formula.splice(0);
   used.fill(false);
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < used.length; i++) {
     const btn = document.getElementById(`num-btn-${i}`) as HTMLButtonElement;
     if (btn) {
       btn.disabled = false;
@@ -68,8 +75,10 @@ function resetState() {
 // ==========================================
 async function fetchDailyNumbers() {
   try {
-    const response = await fetch(API_URL);
+    let currentApiUrl = (isHardMode) ? API_Hard: API_URL;
+    const response = await fetch(currentApiUrl);
     const data = await response.json();
+    used = new Array(data.numbers.length).fill(false);
     
     const container = document.getElementById("numbers-container");
     if (!container) return;
@@ -187,6 +196,34 @@ if(ruleBtn && ruleDialog) {
 if (closeRuleBtn && ruleDialog){
   closeRuleBtn.addEventListener("click", () => {
     ruleDialog.close();
+  })
+}
+
+if (difficultyToggle) {
+  difficultyToggle.addEventListener("change", (e) => {
+    const target = e.target as HTMLInputElement;
+    isHardMode = target.checked;
+
+    if (modeLabel) {
+      modeLabel.textContent = isHardMode ? "Hard" : "Normal";
+    }
+
+    formula.splice(0);
+    openBracketCount = 0;
+    updateDisplay();
+    fetchDailyNumbers();
+  })
+}
+
+if (settingBtn && settingDialog) {
+  settingBtn.addEventListener("click", () => {
+    settingDialog.showModal();
+  })
+}
+
+if (closeSettingBtn && settingDialog) {
+  closeSettingBtn.addEventListener("click", () => {
+    settingDialog.close();
   })
 }
 
