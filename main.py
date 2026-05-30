@@ -7,6 +7,9 @@ import json
 with open('make_10_problem.json', 'r', encoding="utf-8") as f:
     json_data = json.load(f)
 
+with open('make_10_problem_hard.json', 'r', encoding="utf-8") as f:
+    hard_data = json.load(f)
+
 app = FastAPI()
 
 app.add_middleware(
@@ -34,4 +37,10 @@ def get_daily_numbers():
 def get_random_numbers():
     random_item = random.choice(json_data)
     numbers = random_item['numbers']
+    return {"numbers": numbers}
+
+@app.get("/hard")
+def get_random_numbers_hard():
+    hard_item = random.choice(hard_data)
+    numbers = hard_item['numbers']
     return {"numbers": numbers}
