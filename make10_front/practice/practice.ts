@@ -119,6 +119,7 @@ const resetBtn = document.getElementById("btn-reset");
 const ruleBtn = document.getElementById("btn-rule");
 const ruleDialog = document.getElementById("rule-dialog") as HTMLDialogElement;
 const closeRuleBtn = document.getElementById("btn-close-rule");
+const btnGoHome = document.getElementById("btn-go-home");
 
 opButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -182,7 +183,6 @@ if (deleteBtn) {
 
 if (resetBtn) {
   resetBtn.addEventListener("click", () => {
-    // 【穴埋め1-A】作った関数を呼ぶだけ！
     resetState();
   });
 }
@@ -224,6 +224,12 @@ if (settingBtn && settingDialog) {
 if (closeSettingBtn && settingDialog) {
   closeSettingBtn.addEventListener("click", () => {
     settingDialog.close();
+  })
+}
+
+if (btnGoHome) {
+  btnGoHome.addEventListener("click", () => {
+    window.location.href = "/";
   })
 }
 
