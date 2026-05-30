@@ -9,17 +9,35 @@
     <div id="app">
       <div class="header-container">
         <h1>エンドレス</h1>
-        
-        <div class="toggle-container">
-          <span id="mode-label">Normal</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="difficulty-toggle">
-            <span class="slider"></span>
-          </label>
+
+        <div class="header-actions">
+          <button id="btn-setting" class="icon-btn" title="設定">⚙</button>
+        </div>
+      </div>
+
+      <dialog id="setting-dialog">
+        <h2>設定</h2>
+
+        <div class="setting-item">
+          <span>難易度</span>
+          <div class="toggle-container">
+            <label class="toggle-switch">
+              <input type="checkbox" id="difficulty-toggle">
+              <span class="slider"></span>
+            </label>
+            <span id="mode-label">Normal</span>
+          </div>
         </div>
 
-        <button id="btn-rule" class="info-btn" title="ルールを見る">i</button>
-      </div>
+        <div class="setting-item">
+          <span>遊び方・ルール</span>
+          <button id="btn-rule" class="btn" style="padding: 6px 13px; font-size: 14px; max-width: 100px;">見る</button>
+        </div>
+
+        <div class="dialog-actions">
+          <button id="btn-close-setting" class="btn" style="width: 100px;">閉じる</button>
+        </div>
+      </dialog>
 
       <div class="calculator">
         <div class="display" id="formula-display">
