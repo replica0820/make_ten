@@ -8,7 +8,16 @@
   <body>
     <div id="app">
       <div class="header-container">
-        <h1>エンドレス</h1>   
+        <h1>エンドレス</h1>
+        
+        <div class="toggle-container">
+          <span id="mode-label">Normal</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="difficulty-toggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+
         <button id="btn-rule" class="info-btn" title="ルールを見る">i</button>
       </div>
 
@@ -41,7 +50,7 @@
       <dialog id="rule-dialog">
         <h2>ルールの説明</h2>
         <ul>
-          <li>用意された4つの数字を、<strong>すべて1回ずつ</strong>使います。</li>
+          <li>用意された数字を、<strong>すべて1回ずつ</strong>使います。</li>
           <li>四則演算（＋, －, ×, ÷ ）とカッコを組み合わせて、計算結果が<strong>ピッタリ「10」</strong>になる数式を作ってください。</li>
         </ul>
 
