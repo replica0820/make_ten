@@ -143,7 +143,7 @@ dialog ul{
 /* トースト通知の基本スタイル（最初は画面の上に隠しておく） */
 .toast {
   position: fixed;
-  top: -100px; /* 画面外に追い出しておく */
+  top: -200px; /* 画面外に追い出しておく */
   left: 50%;
   transform: translateX(-50%); /* ド真ん中に持ってくる魔法 */
   background-color: #333;
