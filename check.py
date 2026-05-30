@@ -39,7 +39,7 @@ def can_make_10(numbers):
 
 # --- 動作確認用のコード ---
 if __name__ == "__main__":
-    for numbers in itertools.combinations_with_replacement(range(1,10),4):
+    for numbers in itertools.combinations_with_replacement(range(1,10),6):
         num = [Fraction(c) for c in numbers]
         if can_make_10(num):
             can_num.append({
@@ -47,7 +47,7 @@ if __name__ == "__main__":
                 "numbers": list(numbers)
             })
             problem_id += 1
-    with open("make_10_problem.json", "w", encoding="utf-8") as f:
+    with open("make_10_problem_hard.json", "w", encoding="utf-8") as f:
         json.dump(can_num, f, indent = 4)
 
     print(f"処理完了: {len(can_num)}個の組み合わせを保存完了")
