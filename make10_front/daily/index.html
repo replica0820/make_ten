@@ -45,6 +45,18 @@
 
       <dialog id="setting-dialog">
         <h2>設定</h2>
+
+        <div class="setting-item">
+          <span>ダークモード</span>
+          <div class="toggle-container">
+            <label class="toggle-switch">
+              <input type="checkbox" id="dark-mode-toggle">
+              <span class="slider"></span>
+            </label>
+            <span id="dark-mode-label" style="display: inline-block; width: 40px; text-align: left;">OFF</span>
+          </div>
+        </div>
+        
         <div class="setting-item">
           <span>遊び方・ルール</span>
           <button id="btn-rule" class="btn" style="padding: 6px 13px; font-size: 14px; max-width: 100px;">見る</button>
@@ -71,7 +83,7 @@
         </div>
     </dialog>
     <dialog id="already-cleared-dialog">
-      <h2 style="color: #d32f2f; text-align: center;">プレイ済み</h2>
+      <h2 style="color: var(--text-color); text-align: center;">プレイ済み</h2>
       <p style="line-height: 1.6;">
         今日のデイリーチャレンジはすでにクリア済みです！<br>
         明日また挑戦してね。
@@ -89,8 +101,8 @@
         タイム: <span id="clear-time-display"></span>
       </p>
 
-      <div style="background-color: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
-        <p style="font-size: 0.9rem; color: #666; margin: 0;">※ここに将来ランキングが入ります</p>
+      <div style="background-color: var(--placeholder-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+        <p style="font-size: 0.9rem; color: var(--text-color); margin: 0;">※ここに将来ランキングが入ります</p>
       </div>
 
       <div class="dialog-actions">

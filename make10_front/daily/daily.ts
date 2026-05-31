@@ -258,6 +258,30 @@ if (btnGoHome) {
   })
 }
 
+const darkModeToggle = document.getElementById("dark-mode-toggle") as HTMLInputElement;
+const darkModeLabel = document.getElementById("dark-mode-label");
+
+const saveTheme = localStorage.getItem("theme");
+if (saveTheme == "dark") {
+  document.body.setAttribute("data-theme", "dark");
+  if (darkModeToggle) darkModeToggle.checked = true;
+  if (darkModeLabel) darkModeLabel.textContent = "ON";
+}
+if (darkModeToggle) {
+  darkModeToggle.addEventListener("change", (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target.checked) {
+      document.body.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+      if (darkModeLabel) darkModeLabel.textContent = "ON";
+    } else {
+      document.body.removeAttribute("data-theme");
+      localStorage.setItem("theme", "light");
+      if (darkModeLabel) darkModeLabel.textContent = "OFF";
+    }
+  })
+}
+
 // ==========================================
 // ★最終実装：提出する（Submit）ボタン
 // ==========================================
