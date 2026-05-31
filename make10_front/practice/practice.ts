@@ -47,7 +47,7 @@ function showToast(message: string, isSuccess: boolean) {
 
   setTimeout(() => {
     toast.classList.remove("show");
-  }, 3000);
+  }, 1000);
 }
 
 function updateDisplay() {
@@ -293,7 +293,7 @@ if (submitBtn) {
         setTimeout(() => {
           resetState();
           fetchDailyNumbers();
-        }, 1500);
+        }, 500);
 
       } else {
         showToast(`残念！計算結果は ${result} でした。やり直してください！`, false);
