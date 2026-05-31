@@ -31,6 +31,7 @@ let openBracketCount: number = 0;
 let dailyQuestions: number[][] = [];
 let currentQuestionIndex: number = 0;
 let startTime: number = 0;
+let clearTimeSeconds: number = 0;
 
 // ==========================================
 // 3. ロジック・画面更新用の関数群
@@ -322,12 +323,13 @@ if (submitBtn) {
           }, 600);
 
         } else {
-          const elapsedSeconds = ((Date.now() -startTime) / 1000);
-          const m = Math.floor(elapsedSeconds / 60);
-          const s = (elapsedSeconds % 60).toFixed(2).padStart(5, '0');
+          clearTimeSeconds = ((Date.now() -startTime) / 1000);
+          const m = Math.floor(clearTimeSeconds / 60);
+          const s = (clearTimeSeconds % 60).toFixed(2).padStart(5, '0');
           const timeText = m > 0? `${m}:${s}` : `${s}`
 
           if (clearTimeDisplay) clearTimeDisplay.textContent = timeText;
+          fetchAndDisplayRanking();
           if (clearResultDialog) clearResultDialog.showModal();
 
           if (submitBtn) (submitBtn as HTMLButtonElement).disabled = true;
@@ -352,6 +354,77 @@ if (btnReturnHomeEarly) {
 
 if (btnReturnHomeClear) {
   btnReturnHomeClear.addEventListener("click", () => window.location.href = "/");
+}
+
+// ==========================================
+// ★ ランキング機能のAPI連携とイベント
+// ==========================================
+const btnRegisterRanking = document.getElementById("btn-register-ranking") as HTMLButtonElement;
+const playerNameInput = document.getElementById("player-name-input") as HTMLInputElement;
+const rankingRegistrationArea = document.getElementById("ranking-registration-area");
+
+// ① ランキングを【登録】する関数（POST）
+async function submitRankingAPI(name: string, time: number) {
+  try {
+    const response = await fetch("http://localhost:8000/ranking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({name, time})
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("ランキング登録エラー:", error);
+  }
+}
+
+async function fetchAndDisplayRanking() {
+  try {
+    const response = await fetch("http://localhost:8000/ranking");
+    const data = await response.json();
+    
+    const rankingList = document.getElementById("ranking-list");
+    if (!rankingList) return;
+    
+    rankingList.innerHTML = "";
+
+    data.ranking.forEach((item: any, index: number) => {
+      const rank = index + 1;
+      const timeStr = item.time.toFixed(2);
+
+      rankingList.innerHTML += `<li>${rank}位: ${item.name} - ${timeStr}秒</li>`
+    });
+
+  } catch (error) {
+    console.error("ランキング取得エラー:", error);
+  }
+}
+
+// ③ 「登録」ボタンを押した時の処理
+if (btnRegisterRanking && playerNameInput && rankingRegistrationArea) {
+  btnRegisterRanking.addEventListener("click", async () => {
+    const playerName = playerNameInput.value.trim();
+    
+    if (playerName === "") {
+      showToast("名前を入力してください！", false);
+      return;
+    }
+    
+    // 二重送信防止のためボタンを押せなくする
+    btnRegisterRanking.disabled = true;
+    
+    // DBに保存！
+    await submitRankingAPI(playerName, clearTimeSeconds);
+    
+    // 登録欄を非表示にしてスッキリさせる
+    rankingRegistrationArea.style.display = "none";
+    
+    // 最新のランキングを取得して再描画！
+    await fetchAndDisplayRanking();
+    
+    showToast("ランキングに登録しました！", true);
+  });
 }
 // ==========================================
 // 6. 初期化処理の実行

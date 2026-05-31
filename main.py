@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import random
 from datetime import datetime
 import json
+import sqlite3
+from pydantic import BaseModel
 
 with open('make_10_problem.json', 'r', encoding="utf-8") as f:
     json_data = json.load(f)
@@ -19,6 +21,28 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+def init_db():
+    conn = sqlite3.connect("ranking.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS rankings(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            time REAL,
+            play_date TEXT
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+init_db()
+
+class RankingSubmit(BaseModel):
+    name: str
+    time: float
 
 @app.get("/")
 def read_root():
@@ -53,3 +77,39 @@ def get_random_numbers_hard():
     hard_item = random.choice(hard_data)
     numbers = hard_item['numbers']
     return {"numbers": numbers}
+
+@app.post("/ranking")
+def submit_ranking(data: RankingSubmit):
+    today_str = datetime.now().date().isoformat()
+    conn = sqlite3.connect("ranking.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO rankings (name, time, play_date) VALUES (?, ?, ?)
+    """, (data.name, data.time, today_str))
+
+    conn.commit()
+    conn.close()
+
+    return {"status": "success"}
+
+@app.get("/ranking")
+def get_ranking():
+    today_str = datetime.now().date().isoformat()
+    conn = sqlite3.connect("ranking.db")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT name, time
+        FROM rankings
+        WHERE play_date = ?
+        ORDER BY time ASC
+        LIMIT 10;
+    """, (today_str,))
+
+    results = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+
+    return {"ranking": results}
+    
