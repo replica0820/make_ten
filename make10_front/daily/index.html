@@ -101,8 +101,16 @@
         タイム: <span id="clear-time-display"></span>
       </p>
 
-      <div style="background-color: var(--placeholder-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
-        <p style="font-size: 0.9rem; color: var(--text-color); margin: 0;">※ここに将来ランキングが入ります</p>
+
+      <div id="ranking-registration-area" style="text-align: center; margin-bottom: 20px;">
+        <input type="text" id="player-name-input" placeholder="名前を入力" maxlength="10" style="padding: 8px; width: 60%; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-color);">
+        <button id="btn-register-ranking" class="btn" style="padding: 8px 16px; margin-left: 8px; font-size: 14px;">登録</button>
+      </div>
+
+      <div id="ranking-display-area" style="background-color: var(--placeholder-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="text-align: center; margin-top: 0; color: var(--text-color);">🏆 トップ10ランキング 🏆</h3>
+        <ul id="ranking-list" style="list-style: none; padding: 0; margin: 0; color: var(--text-color); font-weight: bold; line-height: 1.8;">
+          </ul>
       </div>
 
       <div class="dialog-actions">

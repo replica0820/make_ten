@@ -6,6 +6,9 @@ const btnGoDaily = document.getElementById("btn-go-daily");
 const settingsBtn = document.getElementById("btn-setting-home");
 const settingsDialog = document.getElementById("setting-dialog") as HTMLDialogElement;
 const closeSettingsBtn = document.getElementById("btn-close-settings");
+const rankingBtn = document.getElementById("btn-show-ranking");
+const rankingDialog = document.getElementById("ranking-dialog") as HTMLDialogElement;
+const closeRankingBtn = document.getElementById("btn-close-ranking");
 
 // エンドレスモードへの画面遷移
 if (btnGoPractice) {
@@ -29,6 +32,20 @@ if (settingsBtn && settingsDialog) {
 if (closeSettingsBtn && settingsDialog) {
   closeSettingsBtn.addEventListener("click", () => settingsDialog.close());
 }
+
+if (rankingBtn && rankingDialog) {
+  rankingBtn.addEventListener("click", async () => {
+    await fetchAndDisplayRanking();
+
+    rankingDialog.showModal();
+  });
+}
+
+if (closeRankingBtn && rankingDialog) {
+  closeRankingBtn.addEventListener("click", () => rankingDialog.close());
+}
+
+
 
 const ruleBtn = document.getElementById("btn-rule");
 const ruleDialog = document.getElementById("rule-dialog") as HTMLDialogElement;
@@ -63,4 +80,26 @@ if (darkModeToggle) {
       if (darkModeLabel) darkModeLabel.textContent = "OFF";
     }
   })
+}
+
+async function fetchAndDisplayRanking() {
+  try {
+    const response = await fetch("http://localhost:8000/ranking");
+    const data = await response.json();
+    
+    const rankingList = document.getElementById("home-ranking-list");
+    if (!rankingList) return;
+    
+    rankingList.innerHTML = ""; // 一旦リストを空にする
+
+    data.ranking.forEach((item: any, index: number) => {
+      const rank = index + 1;
+      const timeStr = item.time.toFixed(2);
+
+      rankingList.innerHTML += `<li>${rank}位: ${item.name} - ${timeStr}秒</li>`
+    });
+
+  } catch (error) {
+    console.error("ランキング取得エラー:", error);
+  }
 }
