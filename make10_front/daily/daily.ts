@@ -3,7 +3,7 @@ import '../src/style.css'
 // ==========================================
 // 1. 定数・DOM要素の取得
 // ==========================================
-const API_URL = "http://localhost:8000/daily";
+const API_URL = "https://make-ten.onrender.com/";
 const settingBtn = document.getElementById("btn-setting");
 const settingDialog = document.getElementById("setting-dialog") as HTMLDialogElement;
 const closeSettingBtn = document.getElementById("btn-close-setting");
@@ -366,7 +366,7 @@ const rankingRegistrationArea = document.getElementById("ranking-registration-ar
 // ① ランキングを【登録】する関数（POST）
 async function submitRankingAPI(name: string, time: number) {
   try {
-    const response = await fetch("http://localhost:8000/ranking", {
+    const response = await fetch("https://make-ten.onrender.com//ranking", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -388,7 +388,7 @@ async function submitRankingAPI(name: string, time: number) {
 
 async function fetchAndDisplayRanking() {
   try {
-    const response = await fetch("http://localhost:8000/ranking");
+    const response = await fetch("https://make-ten.onrender.com/ranking");
     const data = await response.json();
     
     const rankingList = document.getElementById("ranking-list");

@@ -84,7 +84,7 @@ if (darkModeToggle) {
 
 async function fetchAndDisplayRanking() {
   try {
-    const response = await fetch("http://localhost:8000/ranking");
+    const response = await fetch("https://make-ten.onrender.com/ranking");
     const data = await response.json();
     
     const rankingList = document.getElementById("home-ranking-list");
