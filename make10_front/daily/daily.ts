@@ -3,7 +3,7 @@ import '../src/style.css'
 // ==========================================
 // 1. 定数・DOM要素の取得
 // ==========================================
-const API_URL = "https://make-ten.onrender.com/";
+const API_URL = "https://make-ten.onrender.com/daily/";
 const settingBtn = document.getElementById("btn-setting");
 const settingDialog = document.getElementById("setting-dialog") as HTMLDialogElement;
 const closeSettingBtn = document.getElementById("btn-close-setting");
