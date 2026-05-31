@@ -28,10 +28,19 @@ def read_root():
 def get_daily_numbers():
     dt = datetime.now().date()
     seed_num = int(dt.strftime("%Y%m%d"))
-    daily_random = random.Random(seed_num)
-    today_item = daily_random.choice(json_data)
-    numbers = today_item['numbers']
-    return {"numbers": numbers}
+
+    random.seed(seed_num)
+
+    normal_items = random.sample(json_data, 8)
+    hard_items = random.sample(hard_data, 2)
+
+    daily_items = normal_items + hard_items
+
+    questions = [item['numbers'] for item in daily_items]
+
+    random.seed()
+
+    return {"questions": questions}
 
 @app.get("/random")
 def get_random_numbers():
