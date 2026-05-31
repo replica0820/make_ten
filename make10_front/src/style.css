@@ -1,6 +1,29 @@
+:root {
+  --bg-color:#f4f6f8;
+  --text-color: #333333;
+  --dialog-bg: #ffffff;
+  --btn-default-bg: #e0e0e0;
+  --btn-default-text: #333333;
+  --calc-bg: #ffffff; 
+  --border-color: #dddddd;
+  --placeholder-bg: #f0f0f0;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --dialog-bg: #2d2d2d;
+  --btn-default-bg: #424242;
+  --btn-default-text: #ffffff;
+  --calc-bg: #1e1e1e;
+  --border-color: #444444;
+  --placeholder-bg: #3a3a3a;
+}
+
 body {
-  font-family: sans-serif;
-  background-color: #f0f2f5;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   display: flex;
   justify-content: center;
   padding: 20px;
@@ -14,11 +37,11 @@ body {
 h1 {
   text-align: center;
   font-size: 1.5rem;
-  color: #333;
+  color: var(--text-color);
 }
 
 .calculator {
-  background: white;
+  background: var(--calc-bg);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -26,7 +49,7 @@ h1 {
 
 .display {
   background: #222;
-  color: #0f0; /* デジタル時計のような緑色 */
+  color: #0f0;
   font-size: 1.5rem;
   font-family: monospace;
   padding: 15px;
@@ -66,7 +89,9 @@ h1 {
 }
 
 dialog {
-  border: none;
+  background-color: var(--dialog-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -74,11 +99,12 @@ dialog {
 }
 
 dialog::backdrop{
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 dialog h2{
   margin-top: 0;
+  color: var(--text-color);
 }
 
 dialog ul{
@@ -148,16 +174,16 @@ dialog ul{
 /* トースト通知の基本スタイル（最初は画面の上に隠しておく） */
 .toast {
   position: fixed;
-  top: -200px; /* 画面外に追い出しておく */
+  top: -200px;
   left: 50%;
-  transform: translateX(-50%); /* ド真ん中に持ってくる魔法 */
+  transform: translateX(-50%);
   background-color: #333;
   color: white;
   padding: 16px 32px;
   border-radius: 8px;
   font-weight: bold;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: top 0.4s ease; /* topの値が変わった時に、0.4秒かけてフワッと動かす */
+  transition: top 0.4s ease;
   z-index: 1000;
 }
 
@@ -177,7 +203,7 @@ dialog ul{
   align-items: center;
   gap: 10px;
   font-weight: bold;
-  color: #555;
+  color: var(--text-color);
 }
 
 .toggle-switch {
@@ -226,9 +252,9 @@ input:checked + .slider::before {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid #555;
-  background-color: white;
-  color: #555;
+  border: 2px solid var(--text-color);
+  background-color: var(--dialog-bg);
+  color: var(--text-color);
   font-weight: bold;
   font-size: 18px;
   cursor: pointer;
@@ -239,7 +265,7 @@ input:checked + .slider::before {
 }
 
 .icon-btn:hover {
-  background-color: #f0f0f0;
+  background-color: var(--btn-default-bg);
 }
 
 .setting-item {
@@ -250,9 +276,9 @@ input:checked + .slider::before {
   padding: 10px;
   gap: 15px;
   width: 300px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-color);
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: var(--text-color);
 }
 
