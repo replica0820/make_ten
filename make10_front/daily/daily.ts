@@ -9,6 +9,13 @@ const settingDialog = document.getElementById("setting-dialog") as HTMLDialogEle
 const closeSettingBtn = document.getElementById("btn-close-setting");
 const btnGoHome = document.getElementById("btn-go-home");
 
+const alreadyClearedDialog = document.getElementById("already-cleared-dialog") as HTMLDialogElement;
+const btnReturnHomeEarly = document.getElementById("btn-return-home-early");
+
+const clearResultDialog = document.getElementById("clear-result-dialog") as HTMLDialogElement;
+const clearTimeDisplay = document.getElementById("clear-time-display");
+const btnReturnHomeClear = document.getElementById("btn-return-home-clear");
+
 type FormulaItem = {
   char: string;
   index: number | null;
@@ -20,6 +27,10 @@ type FormulaItem = {
 let used: boolean[] = [];
 let formula: FormulaItem[] = [];
 let openBracketCount: number = 0;
+
+let dailyQuestions: number[][] = [];
+let currentQuestionIndex: number = 0;
+let startTime: number = 0;
 
 // ==========================================
 // 3. ロジック・画面更新用の関数群
@@ -33,10 +44,8 @@ function showToast(message: string, isSuccess: boolean) {
   toast.textContent = message;
 
   if (isSuccess) {
-    /* trueの時の処理 */
     toast.style.backgroundColor = "#4caf50";
   } else {
-    /* falseの時の処理 */
     toast.style.backgroundColor = "#f44336";
   }
 
@@ -46,6 +55,7 @@ function showToast(message: string, isSuccess: boolean) {
     toast.classList.remove("show");
   }, 3000);
 }
+
 function updateDisplay() {
   const display = document.getElementById("formula-display");
   if (display) {
@@ -65,44 +75,81 @@ function resetState() {
   updateDisplay();
 }
 
+function getTodayString(): string {
+  let today = new Date;
+  let formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  return formattedDate;
+}
+
 // ==========================================
 // 4. API取得と「動的」な要素の生成・イベント登録
 // ==========================================
-async function fetchDailyNumbers() {
+
+async function initDailyMode() {
+  const todayStr = getTodayString();
+  const lastCleareDate = localStorage.getItem('clearedDate');
+
+  if (lastCleareDate == todayStr) {
+    if (alreadyClearedDialog) {
+      alreadyClearedDialog.showModal();
+    }
+    return;
+  }
+
   try {
     const response = await fetch(API_URL);
     const data = await response.json();
     
-    used = new Array(data.numbers.length).fill(false);
+    dailyQuestions = data.questions;
+    currentQuestionIndex = 0;
     
-    const container = document.getElementById("numbers-container");
-    if (!container) return;
-    container.innerHTML = "";
+    startTime = Date.now();
 
-    data.numbers.forEach((num: number, index: number) => {
-      const btn = document.createElement("button");
-      btn.textContent = num.toString();
-      btn.className = "btn num-btn";
-      btn.id = `num-btn-${index}`;
-      
-      btn.addEventListener("click", () => {
-        const lastNum = formula.at(-1);
-        if (lastNum && lastNum.index !== null) {
-          return;
-        }
-
-        formula.push({ char: num.toString(), index: index });
-        used[index] = true;
-        btn.disabled = true;
-        updateDisplay();
-      });
-
-      container.appendChild(btn);
-    });
+    // 最初の問題を画面に展開する関数を呼ぶ
+    loadCurrentQuestion();
 
   } catch (error) {
     console.error("APIエラー:", error);
   }
+}
+
+function loadCurrentQuestion() {
+  // まずは画面の数式などをリセット
+  resetState();
+
+  const currentNumbers = dailyQuestions[currentQuestionIndex];
+  used = new Array(currentNumbers.length).fill(false);
+
+  // タイトルを更新して進捗を表示
+  const titleElement = document.querySelector(".header-container h1");
+  if (titleElement) {
+    titleElement.textContent = `今日のMake 10 パズル (${currentQuestionIndex + 1}/10)`;
+  }
+
+  const container = document.getElementById("numbers-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  currentNumbers.forEach((num: number, index: number) => {
+    const btn = document.createElement("button");
+    btn.textContent = num.toString();
+    btn.className = "btn num-btn";
+    btn.id = `num-btn-${index}`;
+    
+    btn.addEventListener("click", () => {
+      const lastNum = formula.at(-1);
+      if (lastNum && lastNum.index !== null) {
+        return;
+      }
+
+      formula.push({ char: num.toString(), index: index });
+      used[index] = true;
+      btn.disabled = true;
+      updateDisplay();
+    });
+
+    container.appendChild(btn);
+  });
 }
 
 // ==========================================
@@ -219,19 +266,19 @@ const submitBtn = document.getElementById("btn-submit");
 if (submitBtn) {
   submitBtn.addEventListener("click", () => {
     if (used.includes(false)) {
-      showToast("数字を4つすべて使ってください！",false);
+      showToast("数字をすべて使ってください！", false);
       return;
     }
 
     if (openBracketCount !== 0) {
-      showToast("カッコが閉じられていません！",false);
+      showToast("カッコが閉じられていません！", false);
       return;
     }
 
     const lastItem = formula.at(-1);
     const operators = ["+", "-", "*", "/"];
     if (lastItem && operators.includes(lastItem.char)) {
-      showToast("数式が途中で終わっています！",false);
+      showToast("数式が途中で終わっています！", false);
       return;
     }
 
@@ -241,18 +288,48 @@ if (submitBtn) {
       const result = eval(formulaString);
 
       if (Math.abs(result - 10) < 0.00001) {
-        showToast(`おめでとうございます！計算結果: ${result}`,true);
+        currentQuestionIndex++; 
+
+        if (currentQuestionIndex < 10) {
+          showToast(`正解！次の問題へ...`, true);
+          
+          setTimeout(() => {
+            loadCurrentQuestion();
+          }, 600);
+
+        } else {
+          const elapsedSeconds = ((Date.now() -startTime) / 1000);
+          const m = Math.floor(elapsedSeconds / 60);
+          const s = (elapsedSeconds % 60).toFixed(2).padStart(5, '0');
+          const timeText = m > 0? `${m}:${s}` : `${s}`
+
+          if (clearTimeDisplay) clearTimeDisplay.textContent = timeText;
+          if (clearResultDialog) clearResultDialog.showModal();
+
+          if (submitBtn) (submitBtn as HTMLButtonElement).disabled = true;
+
+          const todayStr = getTodayString();
+          localStorage.setItem('clearedDate', todayStr)
+        }
+
       } else {
-        showToast(`残念！計算結果は ${result} でした。やり直してください！`,false);
+        showToast(`残念！計算結果は ${result} でした。やり直してください！`, false);
       }
       
     } catch (error) {
-      showToast("数式を正しく計算できませんでした！",false);
+      showToast("数式を正しく計算できませんでした！", false);
     }
   });
 }
 
+if (btnReturnHomeEarly) {
+  btnReturnHomeEarly.addEventListener("click", () => window.location.href = "/");
+}
+
+if (btnReturnHomeClear) {
+  btnReturnHomeClear.addEventListener("click", () => window.location.href = "/");
+}
 // ==========================================
 // 6. 初期化処理の実行
 // ==========================================
-fetchDailyNumbers();
+initDailyMode();
