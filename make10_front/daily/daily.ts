@@ -366,7 +366,7 @@ const rankingRegistrationArea = document.getElementById("ranking-registration-ar
 // ① ランキングを【登録】する関数（POST）
 async function submitRankingAPI(name: string, time: number) {
   try {
-    const response = await fetch("https://make-ten.onrender.com//ranking", {
+    const response = await fetch("https://make-ten.onrender.com/ranking", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

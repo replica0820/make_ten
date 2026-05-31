@@ -8,8 +8,8 @@ const settingDialog = document.getElementById("setting-dialog") as HTMLDialogEle
 const closeSettingBtn = document.getElementById("btn-close-setting");
 const difficultyToggle = document.getElementById("difficulty-toggle") as HTMLInputElement;
 const modeLabel = document.getElementById("mode-label");
-const API_URL = "http://localhost:8000/random";
-const API_Hard = "http://localhost:8000/hard";
+const API_URL = "https://make-ten.onrender.com/random";
+const API_Hard = "https://make-ten.onrender.com/hard";
 
 type FormulaItem = {
   char: string;
