@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import random
 from datetime import datetime
@@ -6,11 +6,15 @@ import json
 import sqlite3
 from pydantic import BaseModel
 
+
 with open('make_10_problem.json', 'r', encoding="utf-8") as f:
     json_data = json.load(f)
 
 with open('make_10_problem_hard.json', 'r', encoding="utf-8") as f:
     hard_data = json.load(f)
+
+with open('ng_words.json', 'r', encoding="utf-8") as f:
+    ng_word = json.load(f)
 
 app = FastAPI()
 
@@ -80,6 +84,11 @@ def get_random_numbers_hard():
 
 @app.post("/ranking")
 def submit_ranking(data: RankingSubmit):
+
+    for word in ng_word:
+        if word in data.name:
+            raise HTTPException(status_code=400, detail='使用禁止ワードが含まれています')
+
     today_str = datetime.now().date().isoformat()
     conn = sqlite3.connect("ranking.db")
     cursor = conn.cursor()

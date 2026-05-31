@@ -373,9 +373,16 @@ async function submitRankingAPI(name: string, time: number) {
       },
       body: JSON.stringify({name, time})
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || "登録に失敗しました");
+    }
+
     return await response.json();
   } catch (error) {
     console.error("ランキング登録エラー:", error);
+    throw error;
   }
 }
 
@@ -411,19 +418,17 @@ if (btnRegisterRanking && playerNameInput && rankingRegistrationArea) {
       return;
     }
     
-    // 二重送信防止のためボタンを押せなくする
     btnRegisterRanking.disabled = true;
     
-    // DBに保存！
-    await submitRankingAPI(playerName, clearTimeSeconds);
-    
-    // 登録欄を非表示にしてスッキリさせる
-    rankingRegistrationArea.style.display = "none";
-    
-    // 最新のランキングを取得して再描画！
-    await fetchAndDisplayRanking();
-    
-    showToast("ランキングに登録しました！", true);
+    try {
+      await submitRankingAPI(playerName, clearTimeSeconds);
+      rankingRegistrationArea.style.display = "none";
+      await fetchAndDisplayRanking(); 
+      showToast("ランキングに登録しました！", true);
+    }catch (error: any) {
+      showToast(error.message, false);
+      btnRegisterRanking.disabled = false;
+    }
   });
 }
 // ==========================================
