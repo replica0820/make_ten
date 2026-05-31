@@ -20,6 +20,37 @@
   --placeholder-bg: #3a3a3a;
 }
 
+/* ==========================================
+   ダークモード時のボタンの上書き
+   ========================================== */
+[data-theme="dark"] .num-btn {
+  background-color: #333333;   /* 暗いグレー */
+  color: #ffffff;              /* 白文字 */
+  border: 1px solid #555555;   /* 目立たない枠線 */
+}
+
+[data-theme="dark"] .num-btn:disabled {
+  background-color: #222222;
+  color: #666666;
+  border-color: #333333;
+}
+
+[data-theme="dark"] .op-btn {
+  background-color: #1e3a5f;   /* 深いネイビー（水色の代わり） */
+  color: #90caf9;              /* 明るめの青文字で視認性確保 */
+}
+
+[data-theme="dark"] .action-btn {
+  background-color: #4a1c1c;  
+  color: #ffcdd2;
+}
+
+/* 提出ボタン（緑）は今のままで綺麗ですが、少し落ち着かせるならコレ */
+[data-theme="dark"] .submit-btn {
+  background-color: #388e3c;
+  color: #ffffff;
+}
+
 body {
   font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
   background-color: var(--bg-color);
